@@ -205,7 +205,7 @@ at_timer(void)
 				at_cmd_ready = true;
 				break;
 			default:
-				// should never happen, but otherwise harmless
+				break; // should never happen, but otherwise harmless
 			}
 		}
 	}
@@ -225,7 +225,7 @@ at_command(void)
 			at_cmd_ready = false;
 			return;
 		}
-		
+
 		if ((at_cmd_len >= 2) && (at_cmd[0] == 'A') && (at_cmd[1] == 'T')) {
 
 			// look at the next byte to determine what to do
@@ -303,9 +303,9 @@ at_parse_number() __reentrant
 }
 
 static void print_ID_vals(char param, uint8_t end,
-                          const char *__code (*name_param)(__data enum ParamID param),
-                          param_t (*get_param)(__data enum ParamID param)
-                         )
+			  const char *__code (*name_param)(__data enum ParamID param),
+			  param_t (*get_param)(__data enum ParamID param)
+			 )
 {
   register enum ParamID id;
   // convenient way of showing all parameters
@@ -409,10 +409,10 @@ at_ampersand(void)
 			PSCTL = 0x03;				// set PSWE and PSEE
 			*(uint8_t __xdata *)FLASH_SIGNATURE_BYTES = 0xff;	// do the page erase
 			PSCTL = 0x00;				// disable PSWE/PSEE
-			
+
 			// Reset the device using sofware reset
 			RSTSRC |= 0x10;
-			
+
 			for (;;)
 				;
 		}
@@ -442,15 +442,15 @@ at_ampersand(void)
   case 'E':
     switch (at_cmd[4]) {
       case '?':
-        print_encryption_key();
-        return;
-        
+	print_encryption_key();
+	return;
+
       case '=':
-        if (param_set_encryption_key((__xdata unsigned char *)&at_cmd[5])) {
-          at_ok();
-          return;
-        }
-        break;
+	if (param_set_encryption_key((__xdata unsigned char *)&at_cmd[5])) {
+	  at_ok();
+	  return;
+	}
+	break;
     }
 #endif // INCLUDE_AES
 	default:
@@ -482,21 +482,21 @@ at_p (void)
 		at_error();
 		return;
 	}
-	
+
 	pinId = at_cmd[5] - '0';
-	
+
 	switch (at_cmd[3]) {
-			
+
 			// Set pin to output, turn mirroring off pulling pin to ground
 		case 'O':
 			pins_user_set_io(pinId, PIN_OUTPUT);
 			break;
-			
+
 			// Need to figure out how to set pins to Input/Output
 		case 'I':
 			pins_user_set_io(pinId, PIN_INPUT);
 			break;
-			
+
 		case 'R':
 			if(pins_user_get_io(pinId) == PIN_INPUT)
 				printf("val:%u\n", pins_user_get_adc(pinId));
@@ -504,7 +504,7 @@ at_p (void)
 				at_error();
 			return;
 			break;
-			
+
 		case 'C':
 			if(!isdigit(at_cmd[7]) || !pins_user_set_value(pinId, (at_cmd[7]-'0')?1:0))
 			{
@@ -516,7 +516,7 @@ at_p (void)
 			at_error();
 			return;
 	}
-	
+
 	at_ok();
 #else
 	at_error();
@@ -527,12 +527,12 @@ static void
 at_plus(void)
 {
   __pdata uint8_t		creg;
-  
+
   // get the register number first
   idx = 4;
   at_parse_number();
   creg = at_num;
-  
+
   switch (at_cmd[3])
   {
 #if defined BOARD_rfd900a || defined BOARD_rfd900p
@@ -559,9 +559,9 @@ at_plus(void)
       at_parse_number();
       if (calibration_set(creg, at_num&0xFF))
       {
-        at_ok();
+	at_ok();
       } else {
-        at_error();
+	at_error();
       }
       return;
     }

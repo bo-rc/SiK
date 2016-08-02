@@ -11,3 +11,8 @@ SiK_Firmware.sublime-project
 SiK_Firmware.sublime-workspace
 Firmware/Docs
 *.xcodeproj
+Firmware/SiK.config
+Firmware/SiK.creator
+Firmware/SiK.files
+Firmware/SiK.includes
+
